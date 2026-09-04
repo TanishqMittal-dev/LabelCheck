@@ -178,10 +178,21 @@ export async function analyzeProduct(
 
   if (!response.ok) {
     const errorData = await response.json().catch(() => null)
-
-    throw new Error(
-      errorData?.error || 'Failed to analyze the product image.'
+    const diagnostic = errorData?.diagnostic
+    const diagnosticDetails = [
+      diagnostic?.message,
+      diagnostic?.status != null ? `Status: ${diagnostic.status}` : null,
+      diagnostic?.code != null ? `Code: ${diagnostic.code}` : null,
+    ].filter(Boolean).join(' | ')
+    const analysisError = new Error(
+      [
+        errorData?.error || 'Failed to analyze the product image.',
+        diagnosticDetails,
+      ].filter(Boolean).join(' ')
     )
+
+    Object.assign(analysisError, { diagnostic })
+    throw analysisError
   }
 
   const data = await response.json()
