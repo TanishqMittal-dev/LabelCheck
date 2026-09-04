@@ -4,15 +4,15 @@ import { Toaster } from 'sonner'
 
 export const metadata: Metadata = {
   title: {
-    default: 'LabelCheck – Scan. Verify. Comply.',
-    template: '%s | LabelCheck',
+    default: 'नेत्र – Scan. Verify. Comply.',
+    template: '%s | नेत्र',
   },
   description:
     'AI-powered packaged commodity compliance checking based on Legal Metrology (Packaged Commodities) Rules, 2011.',
-  keywords: ['legal metrology', 'packaged commodities', 'compliance', 'label check', 'MRP', 'consumer protection'],
-  authors: [{ name: 'LabelCheck' }],
+  keywords: ['legal metrology', 'packaged commodities', 'compliance', 'label check', 'MRP', 'consumer protection', 'netra', 'नेत्र'],
+  authors: [{ name: 'नेत्र' }],
   openGraph: {
-    title: 'LabelCheck – Scan. Verify. Comply.',
+    title: 'नेत्र – Scan. Verify. Comply.',
     description: 'AI-powered packaged commodity compliance checker.',
     type: 'website',
   },

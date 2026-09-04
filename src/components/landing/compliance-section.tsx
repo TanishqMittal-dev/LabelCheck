@@ -25,12 +25,12 @@ export function ComplianceSection() {
               Based on Legal Metrology Rules
             </h2>
             <p className="mt-4 text-lg text-slate-500 leading-relaxed">
-              LabelCheck verifies declarations required under the{' '}
+              नेत्र verifies declarations required under the{' '}
               <strong className="text-slate-700">Legal Metrology (Packaged Commodities) Rules, 2011</strong>
               {' '}— the central legislation governing mandatory declarations on packaged commodities in India.
             </p>
             <p className="mt-4 text-sm text-slate-400 leading-relaxed">
-              ⚠ LabelCheck is a compliance assistance tool. Results are indicative and should be verified against the applicable rules and the physical product. This tool does not constitute legal advice.
+              ⚠ नेत्र is a compliance assistance tool. Results are indicative and should be verified against the applicable rules and the physical product. This tool does not constitute legal advice.
             </p>
           </div>
 

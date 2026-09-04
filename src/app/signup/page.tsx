@@ -16,7 +16,7 @@ export default function SignupPage() {
               <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-sm">
                 <ScanLine className="w-6 h-6 text-white" />
               </div>
-              <span className="font-bold text-slate-900 text-xl">LabelCheck</span>
+              <span className="font-bold text-slate-900 text-xl">नेत्र</span>
             </div>
             <h1 className="text-2xl font-bold text-slate-900">Create your account</h1>
             <p className="text-slate-500 mt-1 text-sm">Start verifying product compliance for free</p>

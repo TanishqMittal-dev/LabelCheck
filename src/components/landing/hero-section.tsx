@@ -82,7 +82,7 @@ export function HeroSection() {
                   <span className="w-3 h-3 bg-amber-400 rounded-full" />
                   <span className="w-3 h-3 bg-emerald-400 rounded-full" />
                 </div>
-                <span className="text-xs text-slate-400 font-medium">labelcheck.app/scan</span>
+                <span className="text-xs text-slate-400 font-medium">netra.app/scan</span>
               </div>
 
               <div className="p-5 space-y-4">

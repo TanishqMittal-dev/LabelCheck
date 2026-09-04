@@ -167,7 +167,7 @@ export default function ReportPage() {
                 </div>
                 <div>
                   <h1 className="text-xl font-bold text-slate-900 tracking-tight">
-                    LabelCheck Compliance Audit Report
+                    नेत्र Compliance Audit Report
                   </h1>
                   <p className="text-xs text-slate-400">
                     Legal Metrology (Packaged Commodities) Rules, 2011 Verification

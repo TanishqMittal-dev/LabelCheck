@@ -27,7 +27,7 @@ export default function SettingsPage() {
         setEmail(user.email || '')
         setFullName(user.user_metadata?.full_name || user.email?.split('@')[0] || '')
       } else {
-        setEmail('demo.officer@labelcheck.app')
+        setEmail('demo.officer@netra.app')
         setFullName('Legal Metrology Inspector')
       }
     }

@@ -13,7 +13,7 @@ export function Footer() {
               <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                 <ScanLine className="w-5 h-5 text-white" />
               </div>
-              <span className="font-bold text-white text-lg">LabelCheck</span>
+              <span className="font-bold text-white text-lg">नेत्र</span>
             </div>
             <p className="text-sm text-slate-400 leading-relaxed max-w-sm">
               AI-powered packaged commodity compliance checking based on Legal Metrology (Packaged Commodities) Rules, 2011. Helping consumers, businesses and enforcement authorities verify product declarations.
@@ -77,7 +77,7 @@ export function Footer() {
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-slate-500">
-            © 2026 LabelCheck. Built for SIH 2026 Problem Statement PSC26034.
+            © 2026 नेत्र. Built for SIH 2026 Problem Statement PSC26034.
           </p>
           <p className="text-xs text-slate-500 text-center">
             ⚠ Demo application. Results are indicative only. Always verify with official Legal Metrology requirements.

@@ -67,7 +67,7 @@ export function Navbar() {
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shadow-sm group-hover:bg-blue-700 transition-colors">
               <ScanLine className="w-5 h-5 text-white" />
             </div>
-            <span className="font-bold text-slate-900 text-lg tracking-tight">LabelCheck</span>
+            <span className="font-bold text-slate-900 text-lg tracking-tight">नेत्र</span>
           </Link>
 
           {/* Desktop nav */}

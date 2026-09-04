@@ -5,7 +5,7 @@ import { CTASection } from '@/components/landing/cta-section'
 
 export const metadata = {
   title: 'How It Works',
-  description: 'Understand how LabelCheck extracts declarations and audits Legal Metrology compliance.',
+  description: 'Understand how नेत्र extracts declarations and audits Legal Metrology compliance.',
 }
 
 export default function HowItWorksPage() {

@@ -42,7 +42,7 @@ export function HowItWorksSection() {
         {/* Header */}
         <div className="text-center mb-16">
           <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">Process</span>
-          <h2 className="mt-2 text-3xl sm:text-4xl font-bold text-slate-900">How LabelCheck Works</h2>
+          <h2 className="mt-2 text-3xl sm:text-4xl font-bold text-slate-900">How नेत्र Works</h2>
           <p className="mt-4 text-lg text-slate-500 max-w-xl mx-auto">
             Four simple steps from product image to compliance report.
           </p>
