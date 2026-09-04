@@ -162,15 +162,14 @@ function determineStatus(score: number, issues: ComplianceIssue[]): 'compliant' 
  *   return parseGeminiResponse(response.text)
  */
 export async function analyzeProduct(
-  _imageFile: File | null,
-  _imageUrl?: string
+  imageFiles: File[]
 ): Promise<AnalysisResult> {
-  if (!_imageFile) {
-    throw new Error('No image was provided.')
+  if (imageFiles.length === 0) {
+    throw new Error('No images were provided.')
   }
 
   const formData = new FormData()
-  formData.append('image', _imageFile)
+  imageFiles.forEach(imageFile => formData.append('images', imageFile))
 
   const response = await fetch('/api/analyze', {
     method: 'POST',

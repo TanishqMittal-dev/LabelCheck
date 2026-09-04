@@ -55,14 +55,16 @@ export async function POST(request: Request) {
         }
 
         const formData = await request.formData()
-        const image = formData.get('image')
+        const images = formData.getAll('images')
 
-        if (!(image instanceof File)) {
+        if (images.length === 0 || !images.every(image => image instanceof File)) {
             return NextResponse.json(
-                { error: 'No image file was provided.' },
+                { error: 'No image files were provided.' },
                 { status: 400 }
             )
         }
+
+        const imageFiles = images as File[]
 
         const allowedTypes = [
             'image/jpeg',
@@ -70,22 +72,28 @@ export async function POST(request: Request) {
             'image/webp',
         ]
 
-        if (!allowedTypes.includes(image.type)) {
+        if (imageFiles.some(image => !allowedTypes.includes(image.type))) {
             return NextResponse.json(
                 { error: 'Only JPG, PNG and WEBP images are supported.' },
                 { status: 400 }
             )
         }
 
-        if (image.size > 10 * 1024 * 1024) {
+        if (imageFiles.some(image => image.size > 10 * 1024 * 1024)) {
             return NextResponse.json(
                 { error: 'Image must be smaller than 10 MB.' },
                 { status: 400 }
             )
         }
 
-        const imageBuffer = Buffer.from(await image.arrayBuffer())
-        const base64Image = imageBuffer.toString('base64')
+        const imageParts = await Promise.all(
+            imageFiles.map(async image => ({
+                inlineData: {
+                    mimeType: image.type,
+                    data: Buffer.from(await image.arrayBuffer()).toString('base64'),
+                },
+            }))
+        )
 
         const ai = new GoogleGenAI({
             apiKey: process.env.GEMINI_API_KEY,
@@ -93,17 +101,14 @@ export async function POST(request: Request) {
 
         const response = await ai.models.generateContent({
             model: 'gemini-3.5-flash-lite',
-            contents: [
-                {
-                    inlineData: {
-                        mimeType: image.type,
-                        data: base64Image,
+            contents: [{
+                parts: [
+                    ...imageParts,
+                    {
+                        text: `${COMPLIANCE_PROMPT}\n\nThe supplied images are different views of the same product. Combine evidence from all views before producing one result.`,
                     },
-                },
-                {
-                    text: COMPLIANCE_PROMPT,
-                },
-            ],
+                ],
+            }],
             config: {
                 responseMimeType: 'application/json',
             },
