@@ -118,3 +118,5 @@ export const ANALYSIS_STEPS = [
   { id: 'verify', label: 'Checking compliance', description: 'Verifying against Legal Metrology requirements...', duration: 1200 },
   { id: 'report', label: 'Generating report', description: 'Compiling your compliance analysis report...', duration: 800 },
 ]
+
+export { MANDATORY_DECLARATION_RULES } from '@/services/rule-engine'

@@ -14,8 +14,9 @@
  * 4. The return type `AnalysisResult` must remain unchanged for UI compatibility
  */
 
-import { AnalysisResult, ScanResult, ComplianceIssue } from '@/types'
+import { AnalysisResult, ScanResult, ComplianceIssue, ImageCoverageInfo } from '@/types'
 import { generateId } from '@/lib/utils'
+import { detectProductCategory, evaluateMandatoryDeclarations, deriveOverallStatus } from '@/services/rule-engine'
 
 // ─── Mock product datasets ────────────────────────────────────────────────────
 
@@ -328,11 +329,21 @@ export async function analyzeProduct(
       affectedField: result.fieldName,
     }))
 
+  const imageCoverage: ImageCoverageInfo = {
+    imageCount: imageFiles.length,
+    isMultiView: imageFiles.length > 1,
+    coverageQuality: imageFiles.length > 1 ? 'multi_panel' : 'single_panel',
+  }
+
+  const productCategory = detectProductCategory(data.productName, results)
+  const mandatoryDeclarationChecks = evaluateMandatoryDeclarations(results, imageCoverage, productCategory)
+
   const complianceScore = calculateScore(results)
-  const status = determineStatus(complianceScore, issues)
+  const status = deriveOverallStatus(mandatoryDeclarationChecks, determineStatus(complianceScore, issues))
 
   return {
     productName: data.productName,
+    productCategory,
     complianceScore,
     status,
     totalDeclarations: results.length,
@@ -347,6 +358,8 @@ export async function analyzeProduct(
     ).length,
     results,
     issues,
+    mandatoryDeclarationChecks,
+    imageCoverage,
     analyzedAt: new Date().toISOString(),
   }
 }

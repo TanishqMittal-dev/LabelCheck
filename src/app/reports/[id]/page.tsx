@@ -21,7 +21,9 @@ import { ComplianceScoreCard } from '@/components/compliance/compliance-score-ca
 import { DeclarationsTable } from '@/components/compliance/declarations-table'
 import { ComplianceIssuesList } from '@/components/compliance/compliance-issues-list'
 import { ComplianceChecklist } from '@/components/compliance/compliance-checklist'
+import { MandatoryDeclarationCheck } from '@/components/compliance/mandatory-declaration-check'
 import { getScanById } from '@/services/scans'
+import { detectProductCategory, evaluateMandatoryDeclarations } from '@/services/rule-engine'
 import { Scan, AnalysisResult, ScanResult, ComplianceIssue } from '@/types'
 import { toast } from 'sonner'
 
@@ -201,6 +203,22 @@ export default function ReportPage() {
               missingCount={data.missingCount}
               productName={data.productName}
               analyzedAt={data.analyzedAt}
+            />
+
+            {/* Mandatory Declaration Check (Rule Engine Verification) */}
+            <MandatoryDeclarationCheck
+              checks={
+                data.mandatoryDeclarationChecks && data.mandatoryDeclarationChecks.length > 0
+                  ? data.mandatoryDeclarationChecks
+                  : evaluateMandatoryDeclarations(
+                      data.results || [],
+                      data.imageCoverage || { imageCount: 1, isMultiView: false, coverageQuality: 'single_panel' },
+                      data.productCategory || detectProductCategory(data.productName, data.results || [])
+                    )
+              }
+              productCategory={data.productCategory || detectProductCategory(data.productName, data.results || [])}
+              imageCoverage={data.imageCoverage || { imageCount: 1, isMultiView: false, coverageQuality: 'single_panel' }}
+              overallStatus={data.status}
             />
 
             {/* Findings & Issues */}

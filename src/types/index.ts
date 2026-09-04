@@ -1,6 +1,46 @@
 export type ComplianceStatus = 'detected' | 'needs_review' | 'missing'
 export type ScanStatus = 'compliant' | 'needs_review' | 'non_compliant'
 export type IssueSeverity = 'high' | 'medium' | 'low'
+export type MandatoryCheckStatus = 'detected' | 'unable_to_verify' | 'possible_violation'
+
+export interface MandatoryDeclarationRule {
+  ruleId: string
+  declarationName: string
+  fieldName: string
+  regulatoryFramework: 'Legal Metrology' | 'FSSAI' | 'E-Commerce / Consumer Protection' | 'Sectoral'
+  category: 'all' | 'food_beverages' | 'edible_oils' | 'cosmetics_personal_care' | 'general_packaged' | 'imported_goods'
+  requirement: string
+  legalReference: string
+  ruleVersion: string
+  effectiveDate: string
+  validationMethod: 'ocr_presence' | 'regex_format' | 'multi_field' | 'contextual' | 'unit_sale_price'
+  applicability: string
+  exceptions?: string[]
+  standardPanelLocation: 'front_or_any' | 'principal_display_panel' | 'back_or_side_panel'
+}
+
+export interface MandatoryDeclarationCheckResult {
+  ruleId: string
+  ruleVersion: string
+  declarationName: string
+  fieldName: string
+  regulatoryFramework: string
+  status: MandatoryCheckStatus
+  detectedValue: string | null
+  confidence: number
+  reason: string
+  panelNote?: string
+  evidenceReference?: string
+  legalReference: string
+  requirement: string
+  applicability: string
+}
+
+export interface ImageCoverageInfo {
+  imageCount: number
+  isMultiView: boolean
+  coverageQuality: 'single_panel' | 'multi_panel'
+}
 
 export interface ScanResult {
   id: string
@@ -23,6 +63,7 @@ export interface ComplianceIssue {
 
 export interface AnalysisResult {
   productName: string
+  productCategory?: string
   complianceScore: number
   status: ScanStatus
   totalDeclarations: number
@@ -31,6 +72,8 @@ export interface AnalysisResult {
   missingCount: number
   results: ScanResult[]
   issues: ComplianceIssue[]
+  mandatoryDeclarationChecks?: MandatoryDeclarationCheckResult[]
+  imageCoverage?: ImageCoverageInfo
   analyzedAt: string
 }
 
