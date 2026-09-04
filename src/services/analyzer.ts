@@ -165,33 +165,90 @@ export async function analyzeProduct(
   _imageFile: File | null,
   _imageUrl?: string
 ): Promise<AnalysisResult> {
-  // Simulate network/processing delay
-  await new Promise(resolve => setTimeout(resolve, 100))
+  if (!_imageFile) {
+    throw new Error('No image was provided.')
+  }
 
-  // Pick a random mock product
-  const mockProduct = MOCK_PRODUCTS[Math.floor(Math.random() * MOCK_PRODUCTS.length)]
+  const formData = new FormData()
+  formData.append('image', _imageFile)
 
-  const results: ScanResult[] = mockProduct.results.map(r => ({
-    ...r,
-    id: generateId(),
-  }))
+  const response = await fetch('/api/analyze', {
+    method: 'POST',
+    body: formData,
+  })
 
-  const issues: ComplianceIssue[] = mockProduct.issues.map(i => ({
-    ...i,
-    id: generateId(),
-  }))
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => null)
+
+    throw new Error(
+      errorData?.error || 'Failed to analyze the product image.'
+    )
+  }
+
+  const data = await response.json()
+
+  if (!data.productName || !Array.isArray(data.declarations)) {
+    throw new Error('Invalid analysis response from Gemini.')
+  }
+
+  const results: ScanResult[] = data.declarations.map(
+    (declaration: {
+      fieldName: string
+      displayName?: string
+      detectedValue?: string | null
+      status: 'detected' | 'needs_review' | 'missing'
+      confidence?: number
+    }) => ({
+      id: generateId(),
+      fieldName: declaration.fieldName,
+      displayName: declaration.displayName || declaration.fieldName,
+      detectedValue: declaration.detectedValue || null,
+      status: declaration.status,
+      confidence: declaration.confidence ?? 0,
+    })
+  )
+
+  const issues: ComplianceIssue[] = results
+    .filter(
+      result =>
+        result.status === 'missing' ||
+        result.status === 'needs_review'
+    )
+    .map(result => ({
+      id: generateId(),
+      issueType:
+        result.status === 'missing'
+          ? `${result.fieldName}_missing`
+          : `${result.fieldName}_needs_review`,
+      severity: result.status === 'missing' ? 'high' : 'medium',
+      description:
+        result.status === 'missing'
+          ? `${result.displayName} could not be detected on the product label.`
+          : `${result.displayName} was detected but may require manual verification.`,
+      recommendation:
+        result.status === 'missing'
+          ? `Verify that ${result.displayName.toLowerCase()} is clearly printed on the package.`
+          : `Verify the ${result.displayName.toLowerCase()} on the original package.`,
+      affectedField: result.fieldName,
+    }))
 
   const complianceScore = calculateScore(results)
   const status = determineStatus(complianceScore, issues)
 
   return {
-    productName: mockProduct.name,
+    productName: data.productName,
     complianceScore,
     status,
     totalDeclarations: results.length,
-    passedDeclarations: results.filter(r => r.status === 'detected').length,
-    needsReviewCount: results.filter(r => r.status === 'needs_review').length,
-    missingCount: results.filter(r => r.status === 'missing').length,
+    passedDeclarations: results.filter(
+      result => result.status === 'detected'
+    ).length,
+    needsReviewCount: results.filter(
+      result => result.status === 'needs_review'
+    ).length,
+    missingCount: results.filter(
+      result => result.status === 'missing'
+    ).length,
     results,
     issues,
     analyzedAt: new Date().toISOString(),
