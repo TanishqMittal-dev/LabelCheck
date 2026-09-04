@@ -45,6 +45,33 @@ The allowed status values are:
 Confidence must be a number between 0 and 1.
 `
 
+function getSafeGeminiDiagnostic(error: unknown) {
+    const candidate = error as {
+        message?: unknown
+        status?: unknown
+        statusCode?: unknown
+        code?: unknown
+    }
+    const apiKey = process.env.GEMINI_API_KEY
+    const rawMessage = error instanceof Error
+        ? error.message
+        : typeof candidate?.message === 'string'
+            ? candidate.message
+            : 'Unknown Gemini API error.'
+
+    return {
+        message: apiKey ? rawMessage.replaceAll(apiKey, '[REDACTED]') : rawMessage,
+        status: typeof candidate?.status === 'number'
+            ? candidate.status
+            : typeof candidate?.statusCode === 'number'
+                ? candidate.statusCode
+                : null,
+        code: typeof candidate?.code === 'string' || typeof candidate?.code === 'number'
+            ? candidate.code
+            : null,
+    }
+}
+
 export async function POST(request: Request) {
     try {
         if (!process.env.GEMINI_API_KEY) {
@@ -130,11 +157,13 @@ export async function POST(request: Request) {
 
         return NextResponse.json(parsed)
     } catch (error) {
-        console.error('Gemini analysis error:', error)
+        const diagnostic = getSafeGeminiDiagnostic(error)
+        console.error('Gemini analysis error:', diagnostic)
 
         return NextResponse.json(
             {
                 error: 'Failed to analyze the product image.',
+                diagnostic,
             },
             { status: 500 }
         )
