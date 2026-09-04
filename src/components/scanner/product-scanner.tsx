@@ -29,10 +29,12 @@ export function ProductScanner() {
   const [state, setState] = useState<State>('idle')
   const [currentStep, setCurrentStep] = useState(0)
   const cameraInputRef = useRef<HTMLInputElement>(null)
+  const lastCaptureTimeRef = useRef<number>(0)
   const router = useRouter()
   const supabase = createClient()
 
   const addFiles = useCallback((candidateFiles: File[]) => {
+    lastCaptureTimeRef.current = Date.now()
     const unsupportedHeic = candidateFiles.filter(isHeic)
     const unsupportedTypes = candidateFiles.filter(file => !isHeic(file) && !SUPPORTED_IMAGE_TYPES.has(file.type))
     const oversizedFiles = candidateFiles.filter(file => file.size > MAX_IMAGE_SIZE)
@@ -60,7 +62,11 @@ export function ProductScanner() {
     setState('idle')
   }, [])
 
-  const onDrop = useCallback((acceptedFiles: File[]) => addFiles(acceptedFiles), [addFiles])
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    lastCaptureTimeRef.current = Date.now()
+    addFiles(acceptedFiles)
+  }, [addFiles])
+
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
     onDrop,
     accept: { 'image/jpeg': [], 'image/png': [], 'image/webp': [], 'image/heic': [], 'image/heif': [] },
@@ -70,11 +76,31 @@ export function ProductScanner() {
   })
 
   const onCameraChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    addFiles(Array.from(event.target.files || []))
+    lastCaptureTimeRef.current = Date.now()
+    const files = Array.from(event.target.files || [])
+    if (files.length > 0) {
+      addFiles(files)
+    }
     event.target.value = ''
   }
 
-  const removeImage = (id: string) => {
+  const handleCameraClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    cameraInputRef.current?.click()
+  }
+
+  const handleUploadClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    open()
+  }
+
+  const removeImage = (id: string, e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
     setImages(currentImages => {
       const image = currentImages.find(item => item.id === id)
       if (image) URL.revokeObjectURL(image.preview)
@@ -84,8 +110,16 @@ export function ProductScanner() {
     setCurrentStep(0)
   }
 
-  const handleAnalyze = async () => {
-    if (!images.length) return
+  const handleAnalyze = async (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+    // Prevent ghost clicks from mobile camera return / layout shift
+    if (Date.now() - lastCaptureTimeRef.current < 600) {
+      return
+    }
+    if (!images.length || state === 'analyzing') return
     setState('analyzing')
     setCurrentStep(0)
     try {
@@ -119,12 +153,12 @@ export function ProductScanner() {
 
   const addImageActions = (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-      <button type="button" onClick={open} className="bg-white rounded-xl border border-slate-200 p-4 text-center hover:border-blue-200 hover:bg-blue-50/30 transition-colors">
+      <button type="button" onClick={handleUploadClick} className="bg-white rounded-xl border border-slate-200 p-4 text-center hover:border-blue-200 hover:bg-blue-50/30 transition-colors">
         <Upload className="w-5 h-5 text-slate-400 mx-auto mb-2" />
         <p className="text-sm font-medium text-slate-700">Upload from device</p>
         <p className="text-xs text-slate-400 mt-0.5">Select from gallery or files</p>
       </button>
-      <button type="button" onClick={() => cameraInputRef.current?.click()} className="bg-white rounded-xl border border-slate-200 p-4 text-center hover:border-blue-200 hover:bg-blue-50/30 transition-colors">
+      <button type="button" onClick={handleCameraClick} className="bg-white rounded-xl border border-slate-200 p-4 text-center hover:border-blue-200 hover:bg-blue-50/30 transition-colors">
         <Camera className="w-5 h-5 text-slate-400 mx-auto mb-2" />
         <p className="text-sm font-medium text-slate-700">Capture with camera</p>
         <p className="text-xs text-slate-400 mt-0.5">Use your phone&apos;s rear camera</p>
@@ -157,15 +191,15 @@ export function ProductScanner() {
             {images.map((image, index) => (
               <div key={image.id} className="relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-50">
                 <img src={image.preview} alt={`Inspection image ${index + 1}`} className="w-full h-52 object-contain" />
-                <button onClick={() => removeImage(image.id)} className="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur rounded-lg flex items-center justify-center shadow-sm border border-slate-200 hover:bg-red-50 hover:border-red-200 hover:text-red-600 transition-colors" aria-label={`Remove inspection image ${index + 1}`}><X className="w-4 h-4" /></button>
+                <button type="button" onClick={(e) => removeImage(image.id, e)} className="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur rounded-lg flex items-center justify-center shadow-sm border border-slate-200 hover:bg-red-50 hover:border-red-200 hover:text-red-600 transition-colors" aria-label={`Remove inspection image ${index + 1}`}><X className="w-4 h-4" /></button>
                 <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur rounded-lg px-3 py-1.5 border border-slate-200"><p className="text-xs text-slate-600 font-medium truncate max-w-[200px]">Image {index + 1}: {image.file.name}</p><p className="text-xs text-slate-400">{(image.file.size / 1024).toFixed(0)} KB</p></div>
               </div>
             ))}
           </div>
           <div className="flex flex-col sm:flex-row gap-3">
-            <Button type="button" variant="outline" onClick={open} className="border-slate-300"><Plus className="w-4 h-4" />Add from device</Button>
-            <Button type="button" variant="outline" onClick={() => cameraInputRef.current?.click()} className="border-slate-300"><Camera className="w-4 h-4" />Capture another</Button>
-            <Button onClick={handleAnalyze} className="flex-1 bg-blue-600 hover:bg-blue-700 shadow-sm font-semibold h-11"><ScanLine className="w-5 h-5" />Analyze Product{images.length > 1 ? ` (${images.length} images)` : ''}</Button>
+            <Button type="button" variant="outline" onClick={handleUploadClick} className="border-slate-300"><Plus className="w-4 h-4" />Add from device</Button>
+            <Button type="button" variant="outline" onClick={handleCameraClick} className="border-slate-300"><Camera className="w-4 h-4" />Capture another</Button>
+            <Button type="button" onClick={handleAnalyze} className="flex-1 bg-blue-600 hover:bg-blue-700 shadow-sm font-semibold h-11"><ScanLine className="w-5 h-5" />Analyze Product{images.length > 1 ? ` (${images.length} images)` : ''}</Button>
           </div>
           <div className="flex items-center gap-2 text-xs text-slate-400 bg-blue-50 rounded-lg px-3 py-2.5 border border-blue-100"><Camera className="w-3.5 h-3.5 text-blue-500 shrink-0" /><span><strong className="text-blue-600">Tip:</strong> Add clear photos of the front, back, sides, and any panel containing declarations.</span></div>
         </>
