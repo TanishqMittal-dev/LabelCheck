@@ -37,37 +37,39 @@ const STEPS = [
 
 export function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="py-24 bg-white">
+    <section id="how-it-works" className="py-24 bg-white border-t border-[#E2E8F0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-16">
-          <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">Process</span>
-          <h2 className="mt-2 text-3xl sm:text-4xl font-bold text-slate-900">How नेत्र Works</h2>
-          <p className="mt-4 text-lg text-slate-500 max-w-xl mx-auto">
-            Four simple steps from product image to compliance report.
+        <div className="text-center mb-16 space-y-3">
+          <div className="inline-flex items-center gap-2 bg-[#EFF6FF] text-[#1D4ED8] border border-[#BFDBFE] rounded-full px-3.5 py-1 text-xs font-semibold">
+            <span>Inspection Process</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0F1B35] tracking-tight">How नेत्र Works</h2>
+          <p className="text-base sm:text-lg text-[#475569] max-w-xl mx-auto leading-relaxed">
+            Four simple steps from packaged commodity photo to statutory compliance audit certificate.
           </p>
         </div>
 
         {/* Steps */}
         <div className="relative">
           {/* Connector line (desktop) */}
-          <div className="hidden lg:block absolute top-14 left-[calc(12.5%+2rem)] right-[calc(12.5%+2rem)] h-0.5 bg-slate-200 z-0" />
+          <div className="hidden lg:block absolute top-14 left-[calc(12.5%+2rem)] right-[calc(12.5%+2rem)] h-0.5 bg-[#E2E8F0] z-0" />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
             {STEPS.map((step, index) => {
               const Icon = step.icon
               return (
-                <div key={step.step} className="flex flex-col items-center text-center">
+                <div key={step.step} className="flex flex-col items-center text-center group">
                   {/* Icon circle */}
-                  <div className={`w-16 h-16 rounded-2xl border-2 ${step.color} flex items-center justify-center mb-4 shadow-sm bg-white relative`}>
+                  <div className={`w-16 h-16 rounded-2xl border-2 ${step.color} flex items-center justify-center mb-4 shadow-2xs bg-white relative card-hover`}>
                     <Icon className="w-7 h-7" />
-                    <div className={`absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full ${step.dotColor} flex items-center justify-center`}>
-                      <span className="text-white text-[9px] font-bold">{index + 1}</span>
+                    <div className={`absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full ${step.dotColor} flex items-center justify-center shadow-xs`}>
+                      <span className="text-white text-[10px] font-bold">{index + 1}</span>
                     </div>
                   </div>
 
-                  <h3 className="font-semibold text-slate-900 text-lg mb-2">{step.title}</h3>
-                  <p className="text-sm text-slate-500 leading-relaxed">{step.description}</p>
+                  <h3 className="font-bold text-[#0F1B35] text-lg mb-1.5">{step.title}</h3>
+                  <p className="text-xs sm:text-sm text-[#475569] leading-relaxed max-w-xs">{step.description}</p>
                 </div>
               )
             })}

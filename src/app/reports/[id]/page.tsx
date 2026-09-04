@@ -135,7 +135,7 @@ export default function ReportPage() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           {/* Top Bar / Navigation */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 print:hidden">
-            <Button variant="ghost" size="sm" asChild className="text-slate-600 hover:text-slate-900 w-fit">
+            <Button variant="ghost" size="sm" asChild className="text-slate-600 hover:text-slate-900 font-semibold w-fit">
               <Link href="/dashboard" className="flex items-center gap-1.5">
                 <ArrowLeft className="w-4 h-4" />
                 Back to Dashboard
@@ -143,15 +143,15 @@ export default function ReportPage() {
             </Button>
 
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" onClick={handleShare} className="text-xs">
+              <Button variant="outline" size="sm" onClick={handleShare} className="text-xs font-semibold border-slate-300">
                 <Share2 className="w-3.5 h-3.5 mr-1" />
                 Share
               </Button>
-              <Button variant="outline" size="sm" onClick={handlePrint} className="text-xs">
+              <Button variant="outline" size="sm" onClick={handlePrint} className="text-xs font-semibold border-slate-300">
                 <Printer className="w-3.5 h-3.5 mr-1" />
                 Print / Save PDF
               </Button>
-              <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-xs font-semibold">
+              <Button size="sm" asChild className="bg-blue-600 hover:bg-blue-700 text-xs font-bold text-white shadow-2xs">
                 <Link href="/scan" className="flex items-center gap-1.5">
                   <ScanLine className="w-3.5 h-3.5" />
                   Scan Another Product
@@ -161,27 +161,32 @@ export default function ReportPage() {
           </div>
 
           {/* Printable Report Header */}
-          <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-2xs space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-100 gap-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-xs">
+          <div className="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-2xs space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-200 gap-4">
+              <div className="flex items-center gap-3.5">
+                <div className="w-11 h-11 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-xs shrink-0">
                   <ScanLine className="w-6 h-6" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-slate-900 tracking-tight">
-                    नेत्र Compliance Audit Report
-                  </h1>
-                  <p className="text-xs text-slate-400">
-                    Legal Metrology (Packaged Commodities) Rules, 2011 Verification
+                  <div className="flex items-center gap-2">
+                    <h1 className="text-xl font-extrabold text-slate-900 tracking-tight">
+                      नेत्र Statutory Compliance Audit Report
+                    </h1>
+                    <span className="text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded">
+                      Official Audit
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Legal Metrology (Packaged Commodities) Rules, 2011 Verification Certificate
                   </p>
                 </div>
               </div>
 
-              <div className="text-left sm:text-right text-xs text-slate-500">
-                <p className="font-mono font-semibold text-slate-800">
-                  Report ID: {reportId}
+              <div className="text-left sm:text-right text-xs text-slate-500 bg-slate-50 sm:bg-transparent p-3 sm:p-0 rounded-xl border sm:border-0 border-slate-200">
+                <p className="font-mono font-bold text-slate-800">
+                  Audit ID: {reportId}
                 </p>
-                <p className="mt-0.5">
+                <p className="mt-0.5 text-[11px] text-slate-500">
                   Generated: {new Date(data.analyzedAt).toLocaleDateString('en-IN', {
                     day: '2-digit',
                     month: 'short',
@@ -231,10 +236,10 @@ export default function ReportPage() {
             <DeclarationsTable results={data.results} />
 
             {/* Official Disclaimer Footer in report */}
-            <div className="p-4 bg-slate-50 rounded-xl border border-slate-200/70 text-slate-500 text-[11px] leading-relaxed">
-              <p className="font-semibold text-slate-700">Legal Metrology Compliance Note:</p>
-              <p className="mt-0.5">
-                This verification audit is based on automatic label reading and comparison against the mandatory declaration requirements under Rule 6 of the Legal Metrology (Packaged Commodities) Rules, 2011. Results are intended for compliance readiness, internal auditing, and pre-distribution screening. Official legal verification requires physical examination by an authorized Legal Metrology Inspector.
+            <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 text-slate-600 text-xs leading-relaxed space-y-1">
+              <p className="font-bold text-slate-800">Legal Metrology Compliance Disclaimer:</p>
+              <p className="text-[11px] text-slate-500">
+                This verification audit is generated by automatic optical analysis comparing extracted label text against mandatory statutory requirements under Rule 6 and Rule 6(11) of the Legal Metrology (Packaged Commodities) Rules, 2011. Results are intended for compliance readiness, manufacturing quality control, and pre-distribution screening. Official legal enforcement determinations require physical packaging examination by an authorized Legal Metrology Inspector.
               </p>
             </div>
           </div>

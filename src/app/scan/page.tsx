@@ -12,61 +12,76 @@ export default function ScanPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-20 pb-16 bg-slate-50/50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="min-h-screen pt-24 pb-16 bg-[#F8FAFC]">
+        {/* Subtle Ambient Radial Highlight */}
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           {/* Header */}
-          <div className="mb-8 text-center sm:text-left">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold mb-3 border border-blue-100">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              Legal Metrology Compliance Engine
+          <div className="text-center sm:text-left space-y-2">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#EFF6FF] text-[#1D4ED8] text-xs font-semibold border border-[#BFDBFE]">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#2563EB]" />
+              <span>Legal Metrology Compliance Inspection</span>
             </div>
-            <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-              Check Product Compliance
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-[#0F1B35] tracking-tight">
+              Package Label Compliance Scanner
             </h1>
-            <p className="text-slate-600 text-sm sm:text-base mt-1.5 max-w-2xl">
-              Upload a clear photo or label scan of the packaged commodity. Our system extracts mandatory declarations and verifies compliance with Legal Metrology (Packaged Commodities) Rules, 2011.
+            <p className="text-[#475569] text-sm sm:text-base max-w-2xl leading-relaxed">
+              Upload or capture clear photos of the packaged commodity. To ensure 100% statutory verification, provide images of all visible packaging panels.
             </p>
+
+            {/* Panel Guidance Chips */}
+            <div className="flex flex-wrap items-center gap-2 pt-2">
+              <span className="text-xs font-bold text-[#0F1B35] mr-1">Recommended Panels:</span>
+              <span className="text-xs font-semibold bg-white text-[#2563EB] border border-[#BFDBFE] px-2.5 py-0.5 rounded-lg shadow-2xs">
+                1. Front (PDP / Name &amp; Net Qty)
+              </span>
+              <span className="text-xs font-semibold bg-white text-[#059669] border border-[#A7F3D0] px-2.5 py-0.5 rounded-lg shadow-2xs">
+                2. Back (MRP, USP &amp; Dates)
+              </span>
+              <span className="text-xs font-semibold bg-white text-indigo-700 border border-indigo-200 px-2.5 py-0.5 rounded-lg shadow-2xs">
+                3. Side (Mfg &amp; Consumer Care)
+              </span>
+            </div>
           </div>
 
           {/* Scanner Card */}
-          <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-sm mb-8">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E2E8F0] shadow-md">
             <ProductScanner />
           </div>
 
-          {/* Quick Guide / Best Practices */}
+          {/* Best Practices Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-white p-5 rounded-xl border border-slate-200/70 shadow-2xs flex items-start gap-3.5">
-              <div className="p-2.5 rounded-lg bg-blue-50 text-blue-600 shrink-0">
-                <CheckCircle className="w-4 h-4" />
+            <div className="bg-white p-5 rounded-2xl border border-[#E2E8F0] shadow-2xs flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-[#EFF6FF] text-[#2563EB] shrink-0">
+                <CheckCircle className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700">Clear Lighting</h3>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  Ensure the text, batch code, and dates are well lit and readable without severe glare.
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#0F1B35]">Clear &amp; Direct Lighting</h3>
+                <p className="text-xs text-[#64748B] mt-1 leading-relaxed">
+                  Avoid harsh reflections on plastic wraps. Ensure batch code, MRP, and dates are sharply focused.
                 </p>
               </div>
             </div>
 
-            <div className="bg-white p-5 rounded-xl border border-slate-200/70 shadow-2xs flex items-start gap-3.5">
-              <div className="p-2.5 rounded-lg bg-emerald-50 text-emerald-600 shrink-0">
-                <FileText className="w-4 h-4" />
+            <div className="bg-white p-5 rounded-2xl border border-[#E2E8F0] shadow-2xs flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-[#ECFDF5] text-[#059669] shrink-0">
+                <FileText className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700">All Panels</h3>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  Front, back, and side panels usually contain the MRP, net quantity, and manufacturer details.
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#0F1B35]">Multi-Angle Coverage</h3>
+                <p className="text-xs text-[#64748B] mt-1 leading-relaxed">
+                  Front, back, and side panels ensure complete coverage of Consumer Care, Manufacturer, and USP rules.
                 </p>
               </div>
             </div>
 
-            <div className="bg-white p-5 rounded-xl border border-slate-200/70 shadow-2xs flex items-start gap-3.5">
-              <div className="p-2.5 rounded-lg bg-amber-50 text-amber-600 shrink-0">
-                <Info className="w-4 h-4" />
+            <div className="bg-white p-5 rounded-2xl border border-[#E2E8F0] shadow-2xs flex items-start gap-3.5">
+              <div className="p-2.5 rounded-xl bg-[#FFFBEB] text-[#D97706] shrink-0">
+                <Info className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700">Indicative AI</h3>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  Results serve as a fast compliance screening tool. Always inspect original packaging for final audits.
+                <h3 className="text-xs font-bold uppercase tracking-wider text-[#0F1B35]">Instant Statutory AI</h3>
+                <p className="text-xs text-[#64748B] mt-1 leading-relaxed">
+                  Automatically extracts values, validates unit math, and produces an inspector-ready audit report.
                 </p>
               </div>
             </div>

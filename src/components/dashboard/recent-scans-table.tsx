@@ -17,24 +17,24 @@ export function RecentScansTable({ scans }: RecentScansTableProps) {
     switch (status) {
       case 'compliant':
         return (
-          <Badge variant="success" className="gap-1 font-semibold">
-            <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+          <span className="inline-flex items-center gap-1 font-bold text-[11px] bg-emerald-50 text-emerald-800 border border-emerald-300 px-2.5 py-0.5 rounded-full">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
             Compliant
-          </Badge>
+          </span>
         )
       case 'needs_review':
         return (
-          <Badge variant="warning" className="gap-1 font-semibold">
-            <AlertTriangle className="w-3 h-3 text-amber-600" />
+          <span className="inline-flex items-center gap-1 font-bold text-[11px] bg-amber-50 text-amber-800 border border-amber-300 px-2.5 py-0.5 rounded-full">
+            <AlertTriangle className="w-3.5 h-3.5 text-amber-600" />
             Needs Review
-          </Badge>
+          </span>
         )
       case 'non_compliant':
         return (
-          <Badge variant="destructive" className="gap-1 font-semibold">
-            <XCircle className="w-3 h-3 text-red-600" />
+          <span className="inline-flex items-center gap-1 font-bold text-[11px] bg-red-50 text-red-800 border border-red-300 px-2.5 py-0.5 rounded-full">
+            <XCircle className="w-3.5 h-3.5 text-red-600" />
             Non-Compliant
-          </Badge>
+          </span>
         )
       default:
         return <Badge variant="secondary">Unknown</Badge>

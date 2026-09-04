@@ -57,77 +57,77 @@ export default function SettingsPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-20 pb-16 bg-slate-50/60">
+      <main className="min-h-screen pt-24 pb-16 bg-[#F8FAFC]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
           {/* Page Header */}
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <SettingsIcon className="w-5 h-5 text-blue-600" />
-              <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
+              <SettingsIcon className="w-5 h-5 text-[#2563EB]" />
+              <h1 className="text-2xl font-extrabold text-[#0F1B35] tracking-tight">
                 Settings &amp; Account
               </h1>
             </div>
-            <p className="text-slate-500 text-sm">
+            <p className="text-[#64748B] text-xs sm:text-sm">
               Manage your compliance inspector profile, notification preferences, and account credentials.
             </p>
           </div>
 
           {/* Profile Card */}
-          <Card className="border-slate-200/80 shadow-2xs">
-            <CardHeader>
+          <Card className="border-[#E2E8F0] shadow-2xs rounded-2xl bg-white">
+            <CardHeader className="border-b border-[#E2E8F0] bg-slate-50/50 pb-4">
               <div className="flex items-center gap-2">
-                <User className="w-4 h-4 text-blue-600" />
-                <CardTitle className="text-base font-bold text-slate-900">
+                <User className="w-4 h-4 text-[#2563EB]" />
+                <CardTitle className="text-base font-bold text-[#0F1B35]">
                   Profile Information
                 </CardTitle>
               </div>
-              <CardDescription className="text-xs text-slate-500">
+              <CardDescription className="text-xs text-[#64748B]">
                 Update your contact information and display name on generated audit reports.
               </CardDescription>
             </CardHeader>
 
             <form onSubmit={handleSaveProfile}>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-4 p-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <Label htmlFor="fullName" className="text-xs">Full Name / Officer Name</Label>
+                    <Label htmlFor="fullName" className="text-xs font-bold text-[#0F1B35]">Full Name / Officer Name</Label>
                     <Input
                       id="fullName"
                       value={fullName}
                       onChange={(e) => setFullName(e.target.value)}
                       placeholder="e.g. Rajesh Kumar"
-                      className="text-sm"
+                      className="text-sm rounded-xl border-[#E2E8F0]"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <Label htmlFor="email" className="text-xs">Email Address</Label>
+                    <Label htmlFor="email" className="text-xs font-bold text-[#0F1B35]">Email Address</Label>
                     <Input
                       id="email"
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="you@example.com"
-                      className="text-sm"
+                      className="text-sm rounded-xl border-[#E2E8F0]"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label htmlFor="organization" className="text-xs">Department / Organization</Label>
+                  <Label htmlFor="organization" className="text-xs font-bold text-[#0F1B35]">Department / Organization</Label>
                   <Input
                     id="organization"
                     value={organization}
                     onChange={(e) => setOrganization(e.target.value)}
                     placeholder="e.g. Legal Metrology Wing / Packaging Audit Team"
-                    className="text-sm"
+                    className="text-sm rounded-xl border-[#E2E8F0]"
                   />
                 </div>
               </CardContent>
 
-              <CardFooter className="flex items-center justify-between border-t border-slate-100 bg-slate-50/50 px-6 py-3">
-                <p className="text-xs text-slate-400">Changes will reflect on future export reports.</p>
-                <Button type="submit" size="sm" className="bg-blue-600 hover:bg-blue-700 text-xs font-semibold" disabled={loading}>
+              <CardFooter className="flex items-center justify-between border-t border-[#E2E8F0] bg-[#F8FAFC] px-6 py-3.5 rounded-b-2xl">
+                <p className="text-xs text-[#64748B]">Changes will reflect on future export reports.</p>
+                <Button type="submit" size="sm" className="bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-bold rounded-xl btn-lift shadow-xs" disabled={loading}>
                   {loading ? (
                     <><Loader2 className="w-3.5 h-3.5 animate-spin mr-1" /> Saving...</>
                   ) : saved ? (
@@ -141,35 +141,35 @@ export default function SettingsPage() {
           </Card>
 
           {/* Preferences Card */}
-          <Card className="border-slate-200/80 shadow-2xs">
-            <CardHeader>
+          <Card className="border-[#E2E8F0] shadow-2xs rounded-2xl bg-white">
+            <CardHeader className="border-b border-[#E2E8F0] bg-slate-50/50 pb-4">
               <div className="flex items-center gap-2">
-                <Bell className="w-4 h-4 text-blue-600" />
-                <CardTitle className="text-base font-bold text-slate-900">
+                <Bell className="w-4 h-4 text-[#2563EB]" />
+                <CardTitle className="text-base font-bold text-[#0F1B35]">
                   Compliance Rule Engine Preferences
                 </CardTitle>
               </div>
-              <CardDescription className="text-xs text-slate-500">
+              <CardDescription className="text-xs text-[#64748B]">
                 Configure verification thresholds and rule sets applied during label inspection.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50/50">
+            <CardContent className="space-y-3 p-6">
+              <div className="flex items-center justify-between p-3.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC]">
                 <div>
-                  <p className="text-xs sm:text-sm font-semibold text-slate-800">Legal Metrology (PC) Rules, 2011</p>
-                  <p className="text-xs text-slate-500">Active rule set covering 10 mandatory declarations</p>
+                  <p className="text-xs sm:text-sm font-bold text-[#0F1B35]">Legal Metrology (PC) Rules, 2011</p>
+                  <p className="text-xs text-[#64748B]">Active rule set covering 10 mandatory declarations</p>
                 </div>
-                <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                <span className="text-xs font-extrabold text-[#059669] bg-[#ECFDF5] border border-[#A7F3D0] px-3 py-1 rounded-full shadow-2xs">
                   Active
                 </span>
               </div>
 
-              <div className="flex items-center justify-between p-3 rounded-xl border border-slate-100 bg-slate-50/50">
+              <div className="flex items-center justify-between p-3.5 rounded-xl border border-[#E2E8F0] bg-[#F8FAFC]">
                 <div>
-                  <p className="text-xs sm:text-sm font-semibold text-slate-800">High Strictness Mode for MRP &amp; Date</p>
-                  <p className="text-xs text-slate-500">Flag missing `(Incl. all taxes)` suffix as high severity</p>
+                  <p className="text-xs sm:text-sm font-bold text-[#0F1B35]">High Strictness Mode for MRP &amp; Date</p>
+                  <p className="text-xs text-[#64748B]">Flag missing `(Incl. all taxes)` suffix as high severity</p>
                 </div>
-                <span className="text-xs font-bold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200">
+                <span className="text-xs font-extrabold text-[#2563EB] bg-[#EFF6FF] border border-[#BFDBFE] px-3 py-1 rounded-full shadow-2xs">
                   Enabled
                 </span>
               </div>

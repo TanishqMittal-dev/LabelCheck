@@ -51,8 +51,7 @@ export function SignupForm() {
       }
 
       toast.success('Account created! Signing you in...')
-      router.push('/dashboard')
-      router.refresh()
+      window.location.href = '/dashboard'
     } catch {
       toast.error('Something went wrong. Please try again.')
     } finally {
@@ -61,82 +60,82 @@ export function SignupForm() {
   }
 
   return (
-    <Card className="shadow-sm border-slate-200">
-      <CardContent className="p-6">
+    <Card className="shadow-md border-[#E2E8F0] rounded-2xl bg-white">
+      <CardContent className="p-6 sm:p-8">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-1.5">
-            <Label htmlFor="fullName">Full Name</Label>
+            <Label htmlFor="fullName" className="text-xs font-bold text-[#0F1B35]">Full Name / Officer Name</Label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <Input
                 id="fullName"
-                placeholder="Your full name"
-                className="pl-9"
+                placeholder="e.g. Ramesh Chandra"
+                className="pl-10 h-11 text-sm rounded-xl border-[#E2E8F0] focus:border-[#2563EB]"
                 {...register('fullName')}
                 aria-invalid={!!errors.fullName}
               />
             </div>
-            {errors.fullName && <p className="text-xs text-red-600">{errors.fullName.message}</p>}
+            {errors.fullName && <p className="text-xs text-red-600 font-medium">{errors.fullName.message}</p>}
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="email">Email address</Label>
+            <Label htmlFor="email" className="text-xs font-bold text-[#0F1B35]">Email address</Label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <Input
                 id="email"
                 type="email"
-                placeholder="you@example.com"
-                className="pl-9"
+                placeholder="officer@netra.gov.in"
+                className="pl-10 h-11 text-sm rounded-xl border-[#E2E8F0] focus:border-[#2563EB]"
                 {...register('email')}
                 aria-invalid={!!errors.email}
               />
             </div>
-            {errors.email && <p className="text-xs text-red-600">{errors.email.message}</p>}
+            {errors.email && <p className="text-xs text-red-600 font-medium">{errors.email.message}</p>}
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password" className="text-xs font-bold text-[#0F1B35]">Password</Label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <Input
                 id="password"
                 type="password"
                 placeholder="Min. 8 characters"
-                className="pl-9"
+                className="pl-10 h-11 text-sm rounded-xl border-[#E2E8F0] focus:border-[#2563EB]"
                 {...register('password')}
                 aria-invalid={!!errors.password}
               />
             </div>
-            {errors.password && <p className="text-xs text-red-600">{errors.password.message}</p>}
+            {errors.password && <p className="text-xs text-red-600 font-medium">{errors.password.message}</p>}
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <Label htmlFor="confirmPassword" className="text-xs font-bold text-[#0F1B35]">Confirm Password</Label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <Input
                 id="confirmPassword"
                 type="password"
                 placeholder="Repeat password"
-                className="pl-9"
+                className="pl-10 h-11 text-sm rounded-xl border-[#E2E8F0] focus:border-[#2563EB]"
                 {...register('confirmPassword')}
                 aria-invalid={!!errors.confirmPassword}
               />
             </div>
-            {errors.confirmPassword && <p className="text-xs text-red-600">{errors.confirmPassword.message}</p>}
+            {errors.confirmPassword && <p className="text-xs text-red-600 font-medium">{errors.confirmPassword.message}</p>}
           </div>
 
-          <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={isLoading}>
+          <Button type="submit" className="w-full bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-bold h-11 rounded-xl shadow-xs btn-lift mt-2" disabled={isLoading}>
             {isLoading ? (
-              <><Loader2 className="w-4 h-4 animate-spin" /> Creating account...</>
+              <><Loader2 className="w-4 h-4 animate-spin mr-2" /> Creating account...</>
             ) : (
               'Create Account'
             )}
           </Button>
 
-          <p className="text-xs text-slate-400 text-center">
-            By creating an account you agree that this is a demo application for SIH 2026.
+          <p className="text-[11px] text-[#64748B] text-center">
+            SIH 2026 National Level Demo Platform &bull; Problem Statement PSC26034
           </p>
         </form>
       </CardContent>

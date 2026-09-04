@@ -134,7 +134,14 @@ export default function DashboardPage() {
           </div>
 
           {/* Stats Cards */}
-          <StatsCards stats={stats} />
+          <StatsCards
+            stats={{
+              ...stats,
+              compliantCount: scans.filter(s => s.status === 'compliant').length,
+              needsReviewCount: scans.filter(s => s.status === 'needs_review').length,
+              violationCount: scans.filter(s => s.status === 'non_compliant').length,
+            }}
+          />
 
           {/* Compliance Charts */}
           <ComplianceCharts />

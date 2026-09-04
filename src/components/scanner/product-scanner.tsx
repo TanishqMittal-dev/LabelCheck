@@ -152,59 +152,192 @@ export function ProductScanner() {
   if (state === 'analyzing') return <AnalysisProgress steps={ANALYSIS_STEPS} currentStep={currentStep} />
 
   const addImageActions = (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-      <button type="button" onClick={handleUploadClick} className="bg-white rounded-xl border border-slate-200 p-4 text-center hover:border-blue-200 hover:bg-blue-50/30 transition-colors">
-        <Upload className="w-5 h-5 text-slate-400 mx-auto mb-2" />
-        <p className="text-sm font-medium text-slate-700">Upload from device</p>
-        <p className="text-xs text-slate-400 mt-0.5">Select from gallery or files</p>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <button
+        type="button"
+        onClick={handleUploadClick}
+        className="group bg-white rounded-2xl border-2 border-slate-200 p-5 text-left hover:border-blue-500 hover:bg-blue-50/20 transition-all shadow-2xs flex items-start gap-4 cursor-pointer"
+      >
+        <div className="w-12 h-12 rounded-xl bg-blue-50 group-hover:bg-blue-600 text-blue-600 group-hover:text-white flex items-center justify-center shrink-0 transition-colors">
+          <Upload className="w-6 h-6" />
+        </div>
+        <div className="space-y-1">
+          <p className="text-sm font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
+            Upload from Device
+          </p>
+          <p className="text-xs text-slate-500 leading-relaxed">
+            Browse files or photo gallery. Select multiple label angles (JPG, PNG, WEBP).
+          </p>
+        </div>
       </button>
-      <button type="button" onClick={handleCameraClick} className="bg-white rounded-xl border border-slate-200 p-4 text-center hover:border-blue-200 hover:bg-blue-50/30 transition-colors">
-        <Camera className="w-5 h-5 text-slate-400 mx-auto mb-2" />
-        <p className="text-sm font-medium text-slate-700">Capture with camera</p>
-        <p className="text-xs text-slate-400 mt-0.5">Use your phone&apos;s rear camera</p>
+
+      <button
+        type="button"
+        onClick={handleCameraClick}
+        className="group bg-white rounded-2xl border-2 border-slate-200 p-5 text-left hover:border-blue-500 hover:bg-blue-50/20 transition-all shadow-2xs flex items-start gap-4 cursor-pointer"
+      >
+        <div className="w-12 h-12 rounded-xl bg-indigo-50 group-hover:bg-indigo-600 text-indigo-600 group-hover:text-white flex items-center justify-center shrink-0 transition-colors">
+          <Camera className="w-6 h-6" />
+        </div>
+        <div className="space-y-1">
+          <p className="text-sm font-bold text-slate-900 group-hover:text-indigo-700 transition-colors">
+            Capture with Camera
+          </p>
+          <p className="text-xs text-slate-500 leading-relaxed">
+            Snap photos directly with your phone or webcam. Captures high-res packaging details.
+          </p>
+        </div>
       </button>
-      <div className="bg-white rounded-xl border border-slate-200 p-4 text-center">
-        <ImageIcon className="w-5 h-5 text-slate-400 mx-auto mb-2" />
-        <p className="text-sm font-medium text-slate-700">Multiple images</p>
-        <p className="text-xs text-slate-400 mt-0.5">Front, back, side, top or bottom</p>
-      </div>
     </div>
   )
 
   return (
     <div className="space-y-6">
-      <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" multiple onChange={onCameraChange} className="hidden" />
+      <input
+        ref={cameraInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        multiple
+        onChange={onCameraChange}
+        className="hidden"
+      />
+
       {images.length === 0 ? (
-        <div {...getRootProps()} className={cn('relative border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all duration-200', isDragActive ? 'border-blue-400 bg-blue-50' : 'border-slate-300 bg-slate-50 hover:border-blue-400 hover:bg-blue-50/50')}>
-          <input {...getInputProps()} />
-          <div className="flex flex-col items-center gap-4">
-            <div className={cn('w-16 h-16 rounded-2xl flex items-center justify-center transition-colors', isDragActive ? 'bg-blue-100' : 'bg-white shadow-sm border border-slate-200')}>
-              {isDragActive ? <ScanLine className="w-8 h-8 text-blue-600" /> : <Upload className="w-8 h-8 text-slate-400" />}
+        <div className="space-y-4">
+          <div
+            {...getRootProps()}
+            className={cn(
+              'relative border-2 border-dashed rounded-2xl p-10 sm:p-12 text-center cursor-pointer transition-all duration-200',
+              isDragActive
+                ? 'border-blue-500 bg-blue-50/60'
+                : 'border-slate-300 bg-slate-50/80 hover:border-blue-400 hover:bg-blue-50/30'
+            )}
+          >
+            <input {...getInputProps()} />
+            <div className="flex flex-col items-center gap-3">
+              <div
+                className={cn(
+                  'w-16 h-16 rounded-2xl flex items-center justify-center transition-colors shadow-2xs',
+                  isDragActive ? 'bg-blue-600 text-white' : 'bg-white border border-slate-200 text-blue-600'
+                )}
+              >
+                {isDragActive ? <ScanLine className="w-8 h-8" /> : <Upload className="w-8 h-8" />}
+              </div>
+              <div className="space-y-1">
+                <p className="text-slate-900 font-bold text-lg tracking-tight">
+                  Drag &amp; drop package images here
+                </p>
+                <p className="text-slate-500 text-xs sm:text-sm">
+                  Or use the buttons below to upload from files or capture with camera
+                </p>
+              </div>
+              <div className="flex items-center gap-2 text-xs font-medium text-slate-500 bg-white rounded-lg px-3 py-1.5 border border-slate-200 shadow-2xs mt-2">
+                <FileImage className="w-3.5 h-3.5 text-blue-600" />
+                Supports JPG, PNG, WEBP &bull; Max 10 MB each (Auto-optimized)
+              </div>
             </div>
-            <div><p className="text-slate-700 font-semibold text-lg">Upload Product Images</p><p className="text-slate-400 text-sm mt-1">Drag &amp; drop or click to browse</p></div>
-            <div className="flex items-center gap-2 text-xs text-slate-400 bg-white rounded-lg px-3 py-1.5 border border-slate-200"><FileImage className="w-3.5 h-3.5" />JPG, PNG, WEBP &bull; Max 10 MB each</div>
           </div>
+
+          {addImageActions}
         </div>
       ) : (
-        <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="space-y-5">
+          {/* Header info */}
+          <div className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-xl p-3 px-4">
+            <div className="flex items-center gap-2">
+              <ImageIcon className="w-4 h-4 text-blue-600" />
+              <span className="text-xs font-bold text-slate-800">
+                {images.length} of {MAX_IMAGES} Package Images Selected
+              </span>
+            </div>
+            <span className="text-[11px] font-medium text-slate-500">
+              Multi-panel inspection enabled
+            </span>
+          </div>
+
+          {/* Image grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {images.map((image, index) => (
-              <div key={image.id} className="relative rounded-2xl overflow-hidden border border-slate-200 bg-slate-50">
-                <img src={image.preview} alt={`Inspection image ${index + 1}`} className="w-full h-52 object-contain" />
-                <button type="button" onClick={(e) => removeImage(image.id, e)} className="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur rounded-lg flex items-center justify-center shadow-sm border border-slate-200 hover:bg-red-50 hover:border-red-200 hover:text-red-600 transition-colors" aria-label={`Remove inspection image ${index + 1}`}><X className="w-4 h-4" /></button>
-                <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur rounded-lg px-3 py-1.5 border border-slate-200"><p className="text-xs text-slate-600 font-medium truncate max-w-[200px]">Image {index + 1}: {image.file.name}</p><p className="text-xs text-slate-400">{(image.file.size / 1024).toFixed(0)} KB</p></div>
+              <div
+                key={image.id}
+                className="relative rounded-2xl overflow-hidden border-2 border-slate-200 bg-slate-900/5 group shadow-2xs"
+              >
+                <div className="h-48 w-full bg-slate-100 flex items-center justify-center overflow-hidden">
+                  <img
+                    src={image.preview}
+                    alt={`Inspection image ${index + 1}`}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+
+                {/* Badge Number */}
+                <div className="absolute top-2.5 left-2.5 bg-slate-900/80 backdrop-blur-xs text-white text-[11px] font-bold px-2.5 py-1 rounded-lg shadow-xs">
+                  Panel {index + 1}
+                </div>
+
+                {/* Remove button */}
+                <button
+                  type="button"
+                  onClick={(e) => removeImage(image.id, e)}
+                  className="absolute top-2.5 right-2.5 w-8 h-8 bg-white/95 backdrop-blur-xs rounded-lg flex items-center justify-center shadow-xs border border-slate-200 text-slate-600 hover:bg-red-50 hover:border-red-200 hover:text-red-600 transition-colors"
+                  aria-label={`Remove inspection image ${index + 1}`}
+                >
+                  <X className="w-4 h-4" />
+                </button>
+
+                {/* Metadata overlay */}
+                <div className="p-2.5 bg-white border-t border-slate-200 flex items-center justify-between text-xs">
+                  <p className="text-slate-700 font-semibold truncate max-w-[150px]">
+                    {image.file.name}
+                  </p>
+                  <span className="text-slate-400 text-[11px] font-mono">
+                    {(image.file.size / 1024).toFixed(0)} KB
+                  </span>
+                </div>
               </div>
             ))}
           </div>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Button type="button" variant="outline" onClick={handleUploadClick} className="border-slate-300"><Plus className="w-4 h-4" />Add from device</Button>
-            <Button type="button" variant="outline" onClick={handleCameraClick} className="border-slate-300"><Camera className="w-4 h-4" />Capture another</Button>
-            <Button type="button" onClick={handleAnalyze} className="flex-1 bg-blue-600 hover:bg-blue-700 shadow-sm font-semibold h-11"><ScanLine className="w-5 h-5" />Analyze Product{images.length > 1 ? ` (${images.length} images)` : ''}</Button>
+
+          {/* Actions row */}
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleUploadClick}
+              className="border-slate-300 hover:bg-slate-50 font-semibold h-11 text-xs sm:text-sm"
+            >
+              <Plus className="w-4 h-4 mr-1.5" />
+              Add from device
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleCameraClick}
+              className="border-slate-300 hover:bg-slate-50 font-semibold h-11 text-xs sm:text-sm"
+            >
+              <Camera className="w-4 h-4 mr-1.5" />
+              Capture another panel
+            </Button>
+            <Button
+              type="button"
+              onClick={handleAnalyze}
+              className="flex-1 bg-blue-600 hover:bg-blue-700 font-bold h-11 text-sm shadow-xs text-white"
+            >
+              <ScanLine className="w-5 h-5 mr-2" />
+              Analyze Product Compliance ({images.length} {images.length === 1 ? 'Panel' : 'Panels'})
+            </Button>
           </div>
-          <div className="flex items-center gap-2 text-xs text-slate-400 bg-blue-50 rounded-lg px-3 py-2.5 border border-blue-100"><Camera className="w-3.5 h-3.5 text-blue-500 shrink-0" /><span><strong className="text-blue-600">Tip:</strong> Add clear photos of the front, back, sides, and any panel containing declarations.</span></div>
-        </>
+
+          {/* Tip banner */}
+          <div className="flex items-start gap-2.5 text-xs text-slate-600 bg-blue-50/80 rounded-xl p-3.5 border border-blue-200/80">
+            <Camera className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+            <span>
+              <strong className="text-blue-900 font-bold">Inspection Guidance:</strong> Capturing multiple panels (Front PDP, Back Declaration Panel, Sides) ensures complete verification of Consumer Care, Manufacturer Address, Net Quantity, and Unit Sale Price.
+            </span>
+          </div>
+        </div>
       )}
-      {images.length === 0 && addImageActions}
     </div>
   )
 }

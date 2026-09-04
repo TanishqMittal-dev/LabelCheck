@@ -41,14 +41,18 @@ const FEATURES = [
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="py-24 bg-slate-50">
+    <section id="features" className="py-24 bg-[#F8FAFC] border-t border-[#E2E8F0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-16">
-          <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">Features</span>
-          <h2 className="mt-2 text-3xl sm:text-4xl font-bold text-slate-900">Built for Compliance at Scale</h2>
-          <p className="mt-4 text-lg text-slate-500 max-w-xl mx-auto">
-            Everything you need to verify packaged commodity labels quickly and accurately.
+        <div className="text-center mb-16 space-y-3">
+          <div className="inline-flex items-center gap-2 bg-[#EFF6FF] text-[#1D4ED8] border border-[#BFDBFE] rounded-full px-3.5 py-1 text-xs font-semibold">
+            <span>Capabilities &amp; Architecture</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0F1B35] tracking-tight">
+            Built for National-Scale Legal Metrology Auditing
+          </h2>
+          <p className="text-base sm:text-lg text-[#475569] max-w-2xl mx-auto leading-relaxed">
+            Everything enforcement officers, brand manufacturers, and consumers need to verify packaged commodity compliance rapidly and accurately.
           </p>
         </div>
 
@@ -59,18 +63,20 @@ export function FeaturesSection() {
             return (
               <div
                 key={feature.title}
-                className="bg-white rounded-2xl p-6 border border-slate-200 hover:border-blue-200 hover:shadow-md transition-all duration-200 group"
+                className="bg-white rounded-2xl p-6 border border-[#E2E8F0] card-hover group"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-blue-50 group-hover:bg-blue-100 rounded-xl flex items-center justify-center shrink-0 transition-colors">
-                    <Icon className="w-5 h-5 text-blue-600" />
+                  <div className="w-11 h-11 bg-[#EFF6FF] group-hover:bg-[#2563EB] group-hover:text-white rounded-xl flex items-center justify-center shrink-0 transition-colors text-[#2563EB]">
+                    <Icon className="w-5 h-5" />
                   </div>
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-semibold text-slate-900">{feature.title}</h3>
-                      <span className="text-xs text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded font-medium">{feature.tag}</span>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-bold text-[#0F1B35] text-base">{feature.title}</h3>
+                      <span className="text-[10px] font-bold text-[#2563EB] bg-[#EFF6FF] border border-[#BFDBFE] px-2 py-0.5 rounded-md uppercase">
+                        {feature.tag}
+                      </span>
                     </div>
-                    <p className="text-sm text-slate-500 leading-relaxed">{feature.description}</p>
+                    <p className="text-xs sm:text-sm text-[#475569] leading-relaxed">{feature.description}</p>
                   </div>
                 </div>
               </div>

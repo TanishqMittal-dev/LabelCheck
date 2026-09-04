@@ -38,23 +38,23 @@ export function ComplianceChecklist({ results }: ComplianceChecklistProps) {
   }
 
   return (
-    <Card className="border-slate-200/80 shadow-2xs">
-      <CardHeader className="pb-3">
+    <Card className="border-slate-200 shadow-2xs">
+      <CardHeader className="pb-3 bg-slate-50/50 border-b border-slate-100">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <CardTitle className="text-base font-bold text-slate-900">
               Legal Metrology Compliance Checklist
             </CardTitle>
             <CardDescription className="text-xs text-slate-500">
-              Filter by verification outcome
+              Item-by-item verification status under Legal Metrology Rules, 2011
             </CardDescription>
           </div>
 
           {/* Filter Tabs */}
-          <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1 rounded-xl">
+          <div className="flex flex-wrap items-center gap-1.5 bg-slate-100/80 p-1 rounded-xl border border-slate-200">
             <button
               onClick={() => setFilter('all')}
-              className={`px-2.5 py-1 text-xs font-semibold rounded-lg transition-all ${
+              className={`px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                 filter === 'all'
                   ? 'bg-white text-slate-900 shadow-2xs'
                   : 'text-slate-600 hover:text-slate-900'
@@ -64,30 +64,30 @@ export function ComplianceChecklist({ results }: ComplianceChecklistProps) {
             </button>
             <button
               onClick={() => setFilter('detected')}
-              className={`px-2.5 py-1 text-xs font-semibold rounded-lg transition-all ${
+              className={`px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                 filter === 'detected'
                   ? 'bg-emerald-600 text-white shadow-2xs'
-                  : 'text-slate-600 hover:text-emerald-700'
+                  : 'text-slate-700 hover:text-emerald-800'
               }`}
             >
               Passed ({counts.detected})
             </button>
             <button
               onClick={() => setFilter('needs_review')}
-              className={`px-2.5 py-1 text-xs font-semibold rounded-lg transition-all ${
+              className={`px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                 filter === 'needs_review'
                   ? 'bg-amber-600 text-white shadow-2xs'
-                  : 'text-slate-600 hover:text-amber-700'
+                  : 'text-slate-700 hover:text-amber-800'
               }`}
             >
               Needs Review ({counts.needs_review})
             </button>
             <button
               onClick={() => setFilter('missing')}
-              className={`px-2.5 py-1 text-xs font-semibold rounded-lg transition-all ${
+              className={`px-3 py-1 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                 filter === 'missing'
                   ? 'bg-red-600 text-white shadow-2xs'
-                  : 'text-slate-600 hover:text-red-700'
+                  : 'text-slate-700 hover:text-red-800'
               }`}
             >
               Missing ({counts.missing})
@@ -95,40 +95,40 @@ export function ComplianceChecklist({ results }: ComplianceChecklistProps) {
           </div>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-4 sm:p-6">
         {filteredResults.length === 0 ? (
           <p className="text-xs text-slate-400 text-center py-6">
             No declarations match the selected filter.
           </p>
         ) : (
-          <div className="divide-y divide-slate-100 border border-slate-100 rounded-xl overflow-hidden">
+          <div className="divide-y divide-slate-100 border border-slate-200 rounded-xl overflow-hidden">
             {filteredResults.map((item) => (
               <div
                 key={item.id}
-                className="p-3.5 flex items-center justify-between hover:bg-slate-50/50 transition-colors"
+                className="p-3.5 sm:p-4 flex items-center justify-between hover:bg-slate-50/70 transition-colors"
               >
                 <div className="flex items-center gap-3">
                   <div className="shrink-0">{getStatusIcon(item.status)}</div>
                   <div>
-                    <span className="text-xs sm:text-sm font-semibold text-slate-800">
+                    <span className="text-xs sm:text-sm font-bold text-slate-900">
                       {item.displayName}
                     </span>
                     {item.detectedValue && (
-                      <p className="text-xs text-slate-500 font-mono mt-0.5">
+                      <p className="text-xs text-slate-600 font-mono mt-0.5">
                         {item.detectedValue}
                       </p>
                     )}
                   </div>
                 </div>
 
-                <div className="text-right">
+                <div className="text-right shrink-0">
                   <span
-                    className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
+                    className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border ${
                       item.status === 'detected'
-                        ? 'bg-emerald-50 text-emerald-700'
+                        ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
                         : item.status === 'needs_review'
-                        ? 'bg-amber-50 text-amber-700'
-                        : 'bg-red-50 text-red-700'
+                        ? 'bg-amber-50 text-amber-800 border-amber-300'
+                        : 'bg-red-50 text-red-800 border-red-300'
                     }`}
                   >
                     {item.status === 'detected'
