@@ -161,6 +161,87 @@ function determineStatus(score: number, issues: ComplianceIssue[]): 'compliant' 
  *   })
  *   return parseGeminiResponse(response.text)
  */
+/**
+ * Preprocesses and compresses an image in the browser using HTML Canvas.
+ * - Resizes longest dimension to max 1600px
+ * - Converts to image/jpeg at 80% quality
+ * - Reduces file size to typically 150KB-500KB (well below 2 MB)
+ */
+async function preprocessImage(file: File): Promise<File> {
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return file
+  }
+
+  return new Promise<File>((resolve, reject) => {
+    const img = new Image()
+    const objectUrl = URL.createObjectURL(file)
+
+    img.onload = () => {
+      URL.revokeObjectURL(objectUrl)
+
+      try {
+        let { width, height } = img
+        const maxDimension = 1600
+
+        if (width > maxDimension || height > maxDimension) {
+          if (width > height) {
+            height = Math.round((height * maxDimension) / width)
+            width = maxDimension
+          } else {
+            width = Math.round((width * maxDimension) / height)
+            height = maxDimension
+          }
+        }
+
+        const canvas = document.createElement('canvas')
+        canvas.width = width
+        canvas.height = height
+
+        const ctx = canvas.getContext('2d')
+        if (!ctx) {
+          throw new Error('Canvas rendering context unavailable.')
+        }
+
+        ctx.drawImage(img, 0, 0, width, height)
+
+        canvas.toBlob(
+          blob => {
+            if (!blob) {
+              reject(new Error(`Failed to compress image "${file.name}".`))
+              return
+            }
+
+            const fileName = file.name.replace(/\.[^/.]+$/, '') + '.jpg'
+            const processedFile = new File([blob], fileName, {
+              type: 'image/jpeg',
+              lastModified: Date.now(),
+            })
+
+            resolve(processedFile)
+          },
+          'image/jpeg',
+          0.8
+        )
+      } catch (err) {
+        reject(
+          new Error(
+            `Failed to process image "${file.name}": ${
+              err instanceof Error ? err.message : 'Unknown error'
+            }`
+          )
+        )
+      }
+    }
+
+    img.onerror = () => {
+      URL.revokeObjectURL(objectUrl)
+      reject(new Error(`Could not load image "${file.name}" for processing.`))
+    }
+
+    img.src = objectUrl
+  })
+}
+
 export async function analyzeProduct(
   imageFiles: File[]
 ): Promise<AnalysisResult> {
@@ -168,8 +249,13 @@ export async function analyzeProduct(
     throw new Error('No images were provided.')
   }
 
+  // Preprocess and compress each image on the client side before upload
+  const processedFiles = await Promise.all(
+    imageFiles.map(imageFile => preprocessImage(imageFile))
+  )
+
   const formData = new FormData()
-  imageFiles.forEach(imageFile => formData.append('images', imageFile))
+  processedFiles.forEach(imageFile => formData.append('images', imageFile))
 
   const response = await fetch('/api/analyze', {
     method: 'POST',
@@ -186,7 +272,7 @@ export async function analyzeProduct(
     ].filter(Boolean).join(' | ')
     const analysisError = new Error(
       [
-        errorData?.error || 'Failed to analyze the product image.',
+        errorData?.error || (response.status ? `Analysis server error (${response.status})` : 'Failed to analyze the product image.'),
         diagnosticDetails,
       ].filter(Boolean).join(' ')
     )
